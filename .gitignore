@@ -13,6 +13,7 @@ __pycache__/
 venv/
 env/
 
+
 # Distribution / packaging
 build/
 dist/
@@ -40,6 +41,9 @@ logs/
 # OS
 Thumbs.db
 
+# Environment variables
+.env
+.env.*
 # Project-specific
 # PyInstaller, app bundles and images are produced under dist/
 # Keep .spec files tracked (do not ignore *.spec)

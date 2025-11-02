@@ -11,6 +11,7 @@ class SettingsDialog(QtWidgets.QDialog):
         super().__init__(parent)
         self.setWindowTitle("Settings")
         self.settings = settings
+        self._did_initial_size = False
 
         root = QtWidgets.QVBoxLayout(self)
         root.setContentsMargins(12, 12, 12, 12)
@@ -19,7 +20,10 @@ class SettingsDialog(QtWidgets.QDialog):
         # Scrollable content for small screens
         scroll = QtWidgets.QScrollArea()
         scroll.setWidgetResizable(True)
+        scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self._scroll = scroll
         content = QtWidgets.QWidget()
+        self._content = content
         scroll.setWidget(content)
         body = QtWidgets.QVBoxLayout(content)
         body.setContentsMargins(0, 0, 0, 0)
@@ -100,9 +104,17 @@ class SettingsDialog(QtWidgets.QDialog):
         btns = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
         btns.accepted.connect(self.accept)
         btns.rejected.connect(self.reject)
+        self._btns = btns
 
         root.addWidget(scroll, 1)
         root.addWidget(btns, 0, QtCore.Qt.AlignRight)
+
+        # Open at the dialog's recommended size based on its contents
+        try:
+            self.adjustSize()
+        except Exception:
+            # Fallback in rare cases where adjustSize may fail during construction
+            self.resize(self.sizeHint())
 
     def accept(self) -> None:  # type: ignore[override]
         self.settings.data["model_name"] = self.model_combo.currentText()
@@ -112,5 +124,34 @@ class SettingsDialog(QtWidgets.QDialog):
         self.settings.data["langsmith_project"] = self.langsmith_project.text().strip()
         self.settings.save()
         super().accept()
+
+    def showEvent(self, event: QtCore.QEvent) -> None:  # type: ignore[override]
+        super().showEvent(event)
+        # On first show, resize to recommended size bounded by available screen
+        if not getattr(self, "_did_initial_size", False):
+            try:
+                # Compute desired size so that scrollbars are not needed
+                content_hint = self._content.sizeHint()
+                btns_hint = self._btns.sizeHint() if hasattr(self, "_btns") else QtCore.QSize(0, 0)
+                # Add layout margins/padding (approximate)
+                horiz_margins = 24
+                vert_margins = 24 + 10  # root margins + spacing above buttons
+                desired_w = content_hint.width() + horiz_margins
+                desired_h = content_hint.height() + btns_hint.height() + vert_margins
+
+                hint = QtCore.QSize(max(400, desired_w), max(300, desired_h))
+                screen = QtWidgets.QApplication.primaryScreen()
+                if screen is not None:
+                    avail = screen.availableGeometry()
+                    max_w = int(avail.width() * 0.9)
+                    max_h = int(avail.height() * 0.9)
+                    w = min(hint.width(), max_w)
+                    h = min(hint.height(), max_h)
+                    self.resize(max(400, w), max(300, h))
+                else:
+                    self.resize(hint)
+            except Exception:
+                pass
+            self._did_initial_size = True
 
 
