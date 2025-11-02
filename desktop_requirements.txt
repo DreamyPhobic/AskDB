@@ -1,0 +1,4 @@
+# Dependencies for building a macOS desktop app
+PySide6>=6.6.0
+pyinstaller>=6.0
+

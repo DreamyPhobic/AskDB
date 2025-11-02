@@ -1,0 +1,19 @@
+* text=auto eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.icns binary
+*.ico binary
+*.dmg binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.so binary
+*.dylib binary
+
+# Text-based assets
+*.svg text
+
