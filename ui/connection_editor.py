@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any, Dict, Optional
 from PySide6 import QtWidgets, QtCore
 
-
+from .utils import mk_label
 class ConnectionEditor(QtWidgets.QWidget):
     test_clicked = QtCore.Signal()
     connect_clicked = QtCore.Signal()
@@ -27,6 +27,7 @@ class ConnectionEditor(QtWidgets.QWidget):
         self.db_type = QtWidgets.QComboBox()
         self.db_type.setFixedHeight(30)
         self.db_type.addItems(["sqlite", "postgres", "mysql"])
+        self.db_type.setFixedWidth(150)
 
         self.conn_name = QtWidgets.QLineEdit("")
         self.conn_name.setPlaceholderText("Optional name for saving this connection")
@@ -38,11 +39,13 @@ class ConnectionEditor(QtWidgets.QWidget):
         self.sqlite_path.setMinimumWidth(400)
 
         self.url_override = QtWidgets.QLineEdit()
-        self.url_override.setPlaceholderText("Optional full SQLAlchemy URL")
+        self.url_override.setPlaceholderText("Optional full database URL")
         self.url_override.setMinimumWidth(500)
 
-        self.host = QtWidgets.QLineEdit("localhost")
+        self.host = QtWidgets.QLineEdit()
         self.host.setFixedWidth(240)
+        self.host.setPlaceholderText("localhost")
+
         self.port = QtWidgets.QSpinBox()
         self.port.setMaximum(65535)
         self.port.setValue(5432)
@@ -61,8 +64,8 @@ class ConnectionEditor(QtWidgets.QWidget):
         dtform.setVerticalSpacing(10)
         dtform.setHorizontalSpacing(14)
         dtform.setLabelAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
-        dtform.setFormAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        dtform.addRow(self._mk_label("DB Type", self.db_type), self.db_type)
+        dtform.setFormAlignment(QtCore.Qt.AlignLeft)
+        dtform.addRow(mk_label("DB Type", self.db_type), self.db_type)
 
         # Group: General
         self.general_box = QtWidgets.QGroupBox("General")
@@ -71,8 +74,8 @@ class ConnectionEditor(QtWidgets.QWidget):
         gform.setHorizontalSpacing(14)
         gform.setLabelAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         gform.setFormAlignment(QtCore.Qt.AlignLeft)
-        gform.addRow(self._mk_label("Connection Name", self.conn_name), self.conn_name)
-        gform.addRow(self._mk_label("URL Override", self.url_override), self.url_override)
+        gform.addRow(mk_label("Connection Name", self.conn_name), self.conn_name)
+        gform.addRow(mk_label("URL Override", self.url_override), self.url_override)
 
         # Group: SQLite
         self.sqlite_box = QtWidgets.QGroupBox("SQLite")
@@ -81,7 +84,7 @@ class ConnectionEditor(QtWidgets.QWidget):
         sform.setHorizontalSpacing(14)
         sform.setFormAlignment(QtCore.Qt.AlignLeft)
         sform.setLabelAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        sform.addRow(self._mk_label("SQLite Path", self.sqlite_path), self.sqlite_path)
+        sform.addRow(mk_label("SQLite Path", self.sqlite_path), self.sqlite_path)
 
         # Group: Network
         self.net_box = QtWidgets.QGroupBox("Network")
@@ -92,9 +95,9 @@ class ConnectionEditor(QtWidgets.QWidget):
         nform.setFormAlignment(QtCore.Qt.AlignLeft)
         self.host.setMinimumWidth(420)
         self.host.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-        nform.addRow(self._mk_label("Host", self.host), self.host)
-        nform.addRow(self._mk_label("Port", self.port), self.port)
-        nform.addRow(self._mk_label("Database", self.dbname), self.dbname)
+        nform.addRow(mk_label("Host", self.host), self.host)
+        nform.addRow(mk_label("Port", self.port), self.port)
+        nform.addRow(mk_label("Database", self.dbname), self.dbname)
 
         # Group: Auth
         self.auth_box = QtWidgets.QGroupBox("Auth")
@@ -103,8 +106,8 @@ class ConnectionEditor(QtWidgets.QWidget):
         aform.setHorizontalSpacing(14)
         aform.setFormAlignment(QtCore.Qt.AlignLeft)
         aform.setLabelAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        aform.addRow(self._mk_label("User", self.user), self.user)
-        aform.addRow(self._mk_label("Password", self.password), self.password)
+        aform.addRow(mk_label("User", self.user), self.user)
+        aform.addRow(mk_label("Password", self.password), self.password)
 
         form.addRow(self.dbtype_box)
         form.addRow(self.general_box)
@@ -193,22 +196,5 @@ class ConnectionEditor(QtWidgets.QWidget):
     def set_busy(self, busy: bool) -> None:
         self.btn_test.setEnabled(not busy)
         self.btn_connect.setEnabled(not busy)
-
-    def _mk_label(self, text: str, buddy: QtWidgets.QWidget) -> QtWidgets.QLabel:
-        lbl = QtWidgets.QLabel(text)
-        try:
-            lbl.setBuddy(buddy)
-        except Exception:
-            pass
-        lbl.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        # Ensure label height visually centers relative to the editor widget
-        try:
-            h = max(0, buddy.sizeHint().height())
-            if h:
-                lbl.setMinimumHeight(h)
-        except Exception:
-            pass
-        lbl.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
-        return lbl
 
 

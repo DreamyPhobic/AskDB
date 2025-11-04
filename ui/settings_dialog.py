@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Optional
 from PySide6 import QtWidgets, QtCore
 
+from .utils import mk_label
 from core.config_store import SettingsManager
 
 
@@ -62,8 +63,8 @@ class SettingsDialog(QtWidgets.QDialog):
         api_row_w = QtWidgets.QWidget()
         api_row_w.setLayout(api_row)
 
-        provider_form.addRow("Model", self.model_combo)
-        provider_form.addRow("OpenAI API Key", api_row_w)
+        provider_form.addRow(mk_label("Model", self.model_combo), self.model_combo)
+        provider_form.addRow(mk_label("OpenAI API Key", api_row_w), api_row_w)
 
         # Observability group
         obs_box = QtWidgets.QGroupBox("Observability (LangSmith)")
@@ -92,8 +93,8 @@ class SettingsDialog(QtWidgets.QDialog):
         self.tracing_check.toggled.connect(_sync_tracing)
 
         obs_form.addRow(self.tracing_check)
-        obs_form.addRow("LangSmith API Key", self.langsmith_key)
-        obs_form.addRow("LangSmith Project", self.langsmith_project)
+        obs_form.addRow(mk_label("LangSmith API Key", self.langsmith_key), self.langsmith_key)
+        obs_form.addRow(mk_label("LangSmith Project", self.langsmith_project), self.langsmith_project)
 
         # Add groups to body
         body.addWidget(provider_box)
