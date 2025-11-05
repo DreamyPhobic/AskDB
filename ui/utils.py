@@ -1,5 +1,7 @@
  
 from PySide6 import QtWidgets, QtCore
+import re
+
 
 def mk_label(text: str, buddy: QtWidgets.QWidget) -> QtWidgets.QLabel:
     lbl = QtWidgets.QLabel(text)
@@ -17,3 +19,10 @@ def mk_label(text: str, buddy: QtWidgets.QWidget) -> QtWidgets.QLabel:
         pass
     lbl.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
     return lbl
+
+def markdown_to_html(text):
+    # Convert **bold** to <b>bold</b>
+    text = re.sub(r'\*\*(.*?)\*\*', r'<b>\1</b>', text)
+    # Convert newlines to <br> so QLabel shows them
+    text = text.replace('\n', '<br>')
+    return text

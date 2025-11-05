@@ -6,6 +6,7 @@ from PySide6 import QtCore, QtWidgets
 from sqlalchemy.engine import Engine
 
 from core.config_store import SettingsManager
+from ui.utils import markdown_to_html
 from ui.widgets import ChatMessageRowWidget, QueryListItemWidget
 from services.sql_utils import normalize_sql, format_sql
 from ui.workers import _AgentStreamWorker, _AgentInitWorker, _SQLExecWorker
@@ -370,7 +371,7 @@ class QueryTab(QtWidgets.QWidget):
             w = self._ai_widgets[ai_index]
             item = self._ai_items[ai_index]
             try:
-                w.bubble.label.setText(new_text)
+                w.bubble.label.setText(markdown_to_html(new_text))
                 w.bubble.adjustSize()
                 w.adjustSize()
                 item.setSizeHint(w.sizeHint())

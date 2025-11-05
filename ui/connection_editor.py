@@ -75,7 +75,19 @@ class ConnectionEditor(QtWidgets.QWidget):
         gform.setLabelAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         gform.setFormAlignment(QtCore.Qt.AlignLeft)
         gform.addRow(mk_label("Connection Name", self.conn_name), self.conn_name)
-        gform.addRow(mk_label("URL Override", self.url_override), self.url_override)
+
+        # Group: Connection URL (separate section)
+        self.url_box = QtWidgets.QGroupBox("Connection URL")
+        url_form = QtWidgets.QFormLayout(self.url_box)
+        url_form.setVerticalSpacing(10)
+        url_form.setHorizontalSpacing(14)
+        url_form.setFormAlignment(QtCore.Qt.AlignLeft)
+        url_form.setLabelAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        url_form.addRow(mk_label("Database URL", self.url_override), self.url_override)
+
+        # OR divider between URL section and other fields
+        self.or_label = QtWidgets.QLabel("- or -")
+        self.or_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
 
         # Group: SQLite
         self.sqlite_box = QtWidgets.QGroupBox("SQLite")
@@ -109,22 +121,33 @@ class ConnectionEditor(QtWidgets.QWidget):
         aform.addRow(mk_label("User", self.user), self.user)
         aform.addRow(mk_label("Password", self.password), self.password)
 
+        # Order: General (name) → URL section → OR → detailed fields
+        
+        form.addRow(self.url_box)
+        form.addRow(self.or_label)
         form.addRow(self.dbtype_box)
-        form.addRow(self.general_box)
         form.addRow(self.sqlite_box)
         form.addRow(self.net_box)
         form.addRow(self.auth_box)
+        
         # Inline actions inside editor
         actions = QtWidgets.QHBoxLayout()
         actions.addStretch(1)
         self.btn_test = QtWidgets.QPushButton("Test")
         self.btn_connect = QtWidgets.QPushButton("Connect")
-        self.btn_save = QtWidgets.QPushButton("Save")
-        actions.addWidget(self.btn_save)
+        
         actions.addWidget(self.btn_test)
         actions.addWidget(self.btn_connect)
         form.addRow(actions)
 
+        
+        form.addRow(self.general_box)
+        self.btn_save = QtWidgets.QPushButton("Save")
+        save_row = QtWidgets.QHBoxLayout()
+        save_row.addStretch(1)
+        save_row.addWidget(self.btn_save)
+        form.addRow(save_row)
+        
         # Center the editor
         form_page_layout = QtWidgets.QHBoxLayout(form_page)
         form_page_layout.addWidget(form_container)
@@ -138,6 +161,11 @@ class ConnectionEditor(QtWidgets.QWidget):
         self.btn_save.clicked.connect(lambda: self.save_clicked.emit())
         self.btn_test.clicked.connect(lambda: self.test_clicked.emit())
         self.btn_connect.clicked.connect(lambda: self.connect_clicked.emit())
+        # Auto-detect DB type from URL as user types
+        try:
+            self.url_override.textChanged.connect(self._on_url_changed)
+        except Exception:
+            pass
 
     def _toggle_fields(self, db_type: str) -> None:
         sqlite = db_type == "sqlite"
@@ -198,3 +226,78 @@ class ConnectionEditor(QtWidgets.QWidget):
         self.btn_connect.setEnabled(not busy)
 
 
+    def _on_url_changed(self, text: str) -> None:
+        try:
+            # Try to parse and populate detailed fields
+            self._populate_fields_from_url(text)
+        except Exception:
+            pass
+
+    def _populate_fields_from_url(self, url: str) -> None:
+        u = (url or "").strip()
+        if not u or "://" not in u:
+            return
+        try:
+            from sqlalchemy.engine import make_url  # lazy import
+            parsed = make_url(u)
+        except Exception:
+            return
+        # Map driver to our combo values
+        driver = (parsed.drivername or "").lower()
+        target_type: Optional[str] = None
+        if driver.startswith("postgresql") or driver.startswith("postgres"):
+            target_type = "postgres"
+        elif driver.startswith("mysql"):
+            target_type = "mysql"
+        elif driver.startswith("sqlite"):
+            target_type = "sqlite"
+        if target_type and self.db_type.currentText() != target_type:
+            try:
+                self.db_type.setCurrentText(target_type)
+            except Exception:
+                pass
+        # Populate credentials and database/host depending on db type
+        try:
+            username = getattr(parsed, "username", None) or ""
+            password = getattr(parsed, "password", None) or ""
+            host = getattr(parsed, "host", None) or ""
+            port = getattr(parsed, "port", None)
+            database = getattr(parsed, "database", None) or ""
+        except Exception:
+            return
+        # sqlite uses file path as database
+        if target_type == "sqlite":
+            if database:
+                self.sqlite_path.setText(str(database))
+            # Clear network/auth fields visually (optional, non-destructive)
+            try:
+                self.host.clear()
+                self.dbname.clear()
+                self.user.clear()
+                self.password.clear()
+            except Exception:
+                pass
+        else:
+            # Network/auth databases
+            try:
+                self.host.setText(str(host))
+            except Exception:
+                pass
+            try:
+                if port is not None:
+                    self.port.setValue(int(port))
+            except Exception:
+                pass
+            try:
+                self.dbname.setText(str(database))
+            except Exception:
+                pass
+            try:
+                self.user.setText(str(username))
+            except Exception:
+                pass
+            try:
+                # Respect empty password as empty string
+                self.password.setText(str(password))
+            except Exception:
+                pass

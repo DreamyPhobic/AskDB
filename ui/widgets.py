@@ -4,16 +4,21 @@ from typing import Optional
 from pathlib import Path
 from PySide6 import QtCore, QtGui, QtWidgets
 
+from .utils import markdown_to_html
+
 
 class ChatBubbleWidget(QtWidgets.QFrame):
     def __init__(self, text: str, role: str = "ai", parent: Optional[QtWidgets.QWidget] = None) -> None:
         super().__init__(parent)
         layout = QtWidgets.QHBoxLayout(self)
         layout.setContentsMargins(10, 10, 10, 10)
-        self.label = QtWidgets.QLabel(text)
+        self.label = QtWidgets.QLabel("")
         self.label.setWordWrap(True)
+        self.label.setText(markdown_to_html(text))
+        self.label.setTextFormat(QtCore.Qt.RichText)
         self.label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
         self.label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        
         # Allow horizontal growth to compute proper height for wrapping
         self.label.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         

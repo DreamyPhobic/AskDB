@@ -4,6 +4,35 @@ Ask your database anything. Natural language to SQL desktop app for PostgreSQL, 
 
 Built with PySide6 (Qt) for UI, SQLAlchemy for database access, and LangChain + OpenAI for NL→SQL.
 
+## Demo video
+
+[Watch the demo video](https://your-demo-link) — replace this link with your uploaded video (YouTube or file share).
+
+## Features
+
+- Natural language to SQL using OpenAI via LangChain
+- Clean desktop UI (PySide6/Qt) with chat, generated SQL, and results together
+- Streaming AI responses with captured intermediate SQL steps
+- "Queries Executed" list: click to run again; right‑click to copy SQL
+- Custom SQL editor with Run button
+- Results table with auto column sizing
+- Connection management:
+  - Paste full database URL or fill fields manually
+  - Auto‑detect DB type from URL (postgres/mysql/sqlite)
+  - Auto‑populate host/port/database/user/password from URL
+  - Test connectivity, Save for reuse, Recent connections, Reconnect
+- Settings: set `OPENAI_API_KEY`, choose model (default `gpt-4o-mini`), optional LangSmith tracing
+- macOS packaging via PyInstaller (`.app` and optional `.dmg`)
+
+## Screenshots
+
+Add your screenshots under `assets/screenshots/` and update the paths below.
+
+![Connections](assets/screenshots/connections.png)
+![Workspace – Chat](assets/screenshots/workspace-chat.png)
+![Workspace – Results](assets/screenshots/workspace-results.png)
+![Custom SQL](assets/screenshots/custom-sql.png)
+
 ## Quick start (desktop)
 
 1) Create a virtual environment and install dependencies

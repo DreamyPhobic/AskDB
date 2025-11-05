@@ -132,7 +132,7 @@ def app_stylesheet() -> str:
         background: %(SUCCESS)s; color: white; border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom-left-radius: 14px; border-bottom-right-radius: 4px; padding: 0px;
     }
     #ChatBubbleAI {
-        background: %(SURFACE_ALT)s; color: %(TEXT)s; border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom-left-radius: 4px; border-bottom-right-radius: 14px; padding: 0px;
+        background: %(PRIMARY)s; color: %(TEXT)s; border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom-left-radius: 4px; border-bottom-right-radius: 14px; padding: 0px;
     }
     #ChatBubbleAISelected {
         background: %(PRIMARY)s; color: white; border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom-left-radius: 4px; border-bottom-right-radius: 14px; padding: 0px;
