@@ -181,7 +181,7 @@ pyinstaller AskDB.spec
 
 (cd dist && zip -r AskDB-unsigned.zip "AskDB.app")
 # or create a DMG
-hdiutil create -volname "AskDB" -srcfolder dist/AskDB.app -ov -format UDZO dist/AskDB-unsigned.dmg
+hdiutil create -volname "AskDB" -srcfolder dist/AskDB.app -ov -format UDZO dist/AskDB.dmg
 ```
 
 What users must do on first run:
