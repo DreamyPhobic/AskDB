@@ -40,22 +40,6 @@ description: Natural language to SQL desktop app for PostgreSQL, MySQL, and SQLi
 ![Workspace](../assets/screenshots/workspace.png)
 ![Settings](../assets/screenshots/setting.png)
 
-
-## Quick start (desktop)
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt -r desktop_requirements.txt
-python desktop_app.py
-```
-
-Then in the app:
-- Open Settings to set your `OPENAI_API_KEY` and choose a model.
-- Create/Test/Save a database connection, then Connect.
-- Chat in English; generated SQL appears and results are shown below.
-
-
 ## How it works
 
 1) You ask a question in plain English
@@ -74,7 +58,6 @@ Supported databases: PostgreSQL (`psycopg2`), MySQL (`pymysql`), SQLite
   - Yes. Use the Custom Query editor and click Run.
 - macOS only?
   - Packaged app targets macOS. You can run from source anywhere Python 3.10+ is available.
-
 
 ## Get involved
 
