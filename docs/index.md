@@ -34,9 +34,9 @@ description: Natural language to SQL desktop app for PostgreSQL, MySQL, and SQLi
 
 ## Screenshots
 
-![Connections](assets/screenshots/connection.png)
-![Workspace](assets/screenshots/workspace.png)
-![Settings](assets/screenshots/setting.png)
+![Connections](./assets/screenshots/connection.png)
+![Workspace](./assets/screenshots/workspace.png)
+![Settings](./assets/screenshots/setting.png)
 
 ## How it works
 
