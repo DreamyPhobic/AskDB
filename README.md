@@ -6,7 +6,7 @@ Built with PySide6 (Qt) for UI, SQLAlchemy for database access, and LangChain + 
 
 ## Demo video
 
-[Watch the demo video](https://your-demo-link) — replace this link with your uploaded video (YouTube or file share).
+![Watch the demo video](assets/video/demo.mp4)
 
 ## Features
 
@@ -28,10 +28,9 @@ Built with PySide6 (Qt) for UI, SQLAlchemy for database access, and LangChain + 
 
 Add your screenshots under `assets/screenshots/` and update the paths below.
 
-![Connections](assets/screenshots/connections.png)
-![Workspace – Chat](assets/screenshots/workspace-chat.png)
-![Workspace – Results](assets/screenshots/workspace-results.png)
-![Custom SQL](assets/screenshots/custom-sql.png)
+![Connections](assets/screenshots/connection.png)
+![Workspace](assets/screenshots/workspace.png)
+![Settings](assets/screenshots/setting.png)
 
 ## Quick start (desktop)
 
