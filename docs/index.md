@@ -40,10 +40,11 @@ description: Natural language to SQL desktop app for PostgreSQL, MySQL, and SQLi
 
 ## How it works
 
-1) You ask a question in plain English
-2) The AI generates SQL with LangChain + OpenAI
-3) SQL is executed via SQLAlchemy against your database
-4) Results appear instantly in the UI
+1. You ask a question in plain English
+2. The AI generates SQL with LangChain + OpenAI
+3. SQL is executed via SQLAlchemy against your database
+4. Results appear instantly in the UI
+
 Supported databases: PostgreSQL (`psycopg2`), MySQL (`pymysql`), SQLite
 
 
