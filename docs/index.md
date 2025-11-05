@@ -34,11 +34,9 @@ description: Natural language to SQL desktop app for PostgreSQL, MySQL, and SQLi
 
 ## Screenshots
 
-> Replace these with your own images under `assets/screenshots/` in the repo.
-
-![Connections](../assets/screenshots/connection.png)
-![Workspace](../assets/screenshots/workspace.png)
-![Settings](../assets/screenshots/setting.png)
+![Connections](./assets/screenshots/connection.png)
+![Workspace](./assets/screenshots/workspace.png)
+![Settings](./assets/screenshots/setting.png)
 
 ## How it works
 
