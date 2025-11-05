@@ -7,12 +7,12 @@ description: Natural language to SQL desktop app for PostgreSQL, MySQL, and SQLi
 
 > Natural language to SQL desktop app for PostgreSQL, MySQL, and SQLite.
 
-[⬇️ Download (Releases)](../releases) · [⭐ Star on GitHub](../) · [Readme](../README.md)
+[⬇️ Download (Releases)](https://github.com/DreamyPhobic/AskDB/releases) · [⭐ Star on GitHub](https://github.com/DreamyPhobic/AskDB) · [Readme](https://github.com/DreamyPhobic/AskDB#readme)
 
 
 ## Demo video
 
-<video src="https://github.com/user-attachments/assets/95feb4a4-5ee5-426b-be1d-fb22645c827f" controls style="max-width:100%;height:auto;"></video>
+[![Watch the demo](./assets/screenshots/workspace.png)](https://github.com/user-attachments/assets/95feb4a4-5ee5-426b-be1d-fb22645c827f)
 
 
 ## Features
@@ -41,13 +41,9 @@ description: Natural language to SQL desktop app for PostgreSQL, MySQL, and SQLi
 ## How it works
 
 1) You ask a question in plain English
-
 2) The AI generates SQL with LangChain + OpenAI
-
 3) SQL is executed via SQLAlchemy against your database
-
 4) Results appear instantly in the UI
-
 Supported databases: PostgreSQL (`psycopg2`), MySQL (`pymysql`), SQLite
 
 
