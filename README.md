@@ -6,7 +6,8 @@ Built with PySide6 (Qt) for UI, SQLAlchemy for database access, and LangChain + 
 
 ## Demo video
 
-![Watch the demo video](assets/video/demo.mp4)
+<video src="https://github.com/user-attachments/assets/95feb4a4-5ee5-426b-be1d-fb22645c827f" controls></video>
+
 
 ## Features
 
