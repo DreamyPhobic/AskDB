@@ -1,0 +1,64 @@
+name: build-desktop
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  package:
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest     # Apple Silicon (arm64)
+            py: '3.11'
+            cmd: pyinstaller AskDB.spec
+          - os: macos-13         # Intel (x86_64)
+            py: '3.11'
+            cmd: pyinstaller AskDB.spec
+          - os: windows-latest
+            py: '3.11'
+            cmd: pyinstaller AskDB.spec
+          - os: ubuntu-latest
+            py: '3.11'
+            cmd: pyinstaller AskDB.spec
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.py }}
+      - name: Install dependencies
+        run: |
+          python -m pip install -U pip
+          pip install -r requirements.txt -r desktop_requirements.txt pyinstaller
+      - name: Build
+        run: ${{ matrix.cmd }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AskDB-${{ matrix.os }}
+          path: |
+            dist/**
+            build/**/warn-*.txt
+
+  release:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          files: |
+            artifacts/**/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
