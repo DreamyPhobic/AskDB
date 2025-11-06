@@ -14,5 +14,6 @@ openai>=1.30.0
 # Desktop UI
 PySide6>=6.6.0
 langsmith>=0.1.70
+Pillow>=10.0.0
 
 
