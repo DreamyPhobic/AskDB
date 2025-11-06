@@ -72,6 +72,11 @@ class QueryTab(QtWidgets.QWidget):
 
         output_layout.setObjectName("SQLOutputLayout")
         self.output_table = QtWidgets.QTableWidget()
+        # Make results table read-only
+        try:
+            self.output_table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        except Exception:
+            pass
         output_layout.addWidget(self.output_table)
 
         left_splitter = QtWidgets.QSplitter()
