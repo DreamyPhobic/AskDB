@@ -10,6 +10,9 @@ description: Natural language to SQL desktop app for PostgreSQL, MySQL, and SQLi
 [⬇️ Download (Releases)](https://github.com/DreamyPhobic/AskDB/releases) · [⭐ Star on GitHub](https://github.com/DreamyPhobic/AskDB) · [Readme](https://github.com/DreamyPhobic/AskDB#readme)
 
 
+<a href="https://www.producthunt.com/products/askdb?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-askdb" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1034895&theme=light&t=1762503113648" alt="AskDB - Ask&#0032;your&#0032;database&#0032;anything | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+
+
 ## Demo video
 
 [![Watch the demo](./assets/screenshots/workspace.png)](https://github.com/user-attachments/assets/95feb4a4-5ee5-426b-be1d-fb22645c827f)
